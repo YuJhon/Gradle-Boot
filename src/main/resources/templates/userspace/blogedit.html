@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="~{fragments/header :: header}">
+</head>
+<body>
+	<style type="text/css">
+		@import "/css/emoji/nature.css";
+	    @import "/css/emoji/object.css";
+	    @import "/css/emoji/people.css";
+	    @import "/css/emoji/place.css";
+	    @import "/css/emoji/Sysmbols.css";
+	    @import "/css/emoji/twemoji.css";
+	</style>
+	<!-- Page Content -->
+	<div class="container blog-content-container">
+		<div class="row">
+			<!-- Blog Engries Column -->
+			<div class="col-md-8">
+				<!-- Blog Post -->
+				<div class="card mb-4">
+					<div class="card-block" th:object="${blogModel.blog}">
+						<input type="hidden" name="id" th:value="*{id}" id="blogId">
+						<input type="text" class="form-control" placeholder="请填写博客标题" id="title" name="title" th:value="*{title}" maxlength="50">
+						
+						<textarea class="blog-textarea" placeholder="请填写博客摘要" id="summary" name="summary" th:text="*{summary}" maxlength="300">
+						
+						</textarea>
+						<hr>
+						
+						<textarea id="md" data-provide="markdown" data-hidden-buttons="cmdImage" name="content" th:text="*{content}">
+						
+						</textarea>
+						<hr>
+					</div>
+				</div>
+			</div>
+			<!-- 右侧栏目 -->
+			<div class="col-md-4">
+				<!-- 文章目录 -->
+				<div class="card">
+					<h5 class="card-header"><i class="fa fa-file-image-0" aria-hidden="true"></i>图片上传</h5>
+					<div class="card-block">
+						<div class="row mt-1">
+							<div class="col-lg-12">
+								<form enctype="multipart/form-data" id="uploadformid">
+									<input type="file" name="file" accept="image/png,image/gif,image/jpeg" id="file" /> 
+									<button class="btn btn-primary float-right" type="button" id="uploadImage">插入</button>
+									<!-- 
+									<div class="kv-avatar">
+						                <div class="file-loading">
+						                    <input id="file" name="avatar-1" type="file" required>
+						                </div>
+						            </div>
+						            <div class="kv-avatar-hint"><small>Select file < 1500 KB</small></div>
+									<div><button class="btn btn-primary float-right" type="button" id="uploadImage">插入</button></div>
+									 -->
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 标签和分类的选择 -->
+				<div class="card">
+					<h5 class="card-header"><i class="fa fa-cog" aria-hidden="true"></i>博客设置</h5>
+					<div class="card-block">
+						<!-- 标签 -->
+						<div class="row mt-1">
+							<div class="col-lg-12">
+								标签：<input type="text" class="form-control form-control-tag" th:value="${blogModel.blog.tags}">
+							</div>
+						</div>
+						<!-- 分类 -->
+						<div class="row mt-1">
+							<div class="col-lg-12">
+								分类：
+								<select id="categorySelect" class="form-control form-control-chosen" data-placeholder="请选择">
+									<option th:value="*{id}" th:text="*{name}" th:each="category : ${blogModel.categories}" th:object="${category}" th:select="${category eq blogModel.blog.category}">Java</option>
+								</select>
+							</div>
+						</div>
+						<!-- 发布按钮 -->
+						<div class="row mt-1">
+                            <div  class="col-lg-12">
+								<button class="btn btn-primary float-right" id="submitBlog"  th:attr="userName=${#authentication.name}">发布</button>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:replace="~{fragments/footer :: footer}">...</div>
+	
+	<script src="../../js/userspace/blogedit.js" th:src="@{/js/userspace/blogedit.js}"></script>
+	<!-- <script type="text/javascript" src="../../../plugins/fileinput/js/fileinput.min.js"></script>
+	<script type="text/javascript" src="../../../plugins/fileinput/js/locales/zh.js"></script>
+	<script>
+		var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
+		    'onclick="alert(\'Call your custom code here.\')">' +
+		    '<i class="glyphicon glyphicon-tag"></i>' +
+		    '</button>'; 
+		$("#file").fileinput({
+		    overwriteInitial: true,
+		    maxFileSize: 1500,
+		    showClose: false,
+		    showCaption: false,
+		    browseLabel: '',
+		    removeLabel: '',
+		    browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
+		    removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+		    removeTitle: 'Cancel or reset changes',
+		    elErrorContainer: '#kv-avatar-errors-1',
+		    msgErrorClass: 'alert alert-block alert-danger',
+		    defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="请选择图片">',
+		    layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
+		    allowedFileExtensions: ["jpg", "png", "gif"]
+		});
+	</script> -->
+</body>
+</html>
